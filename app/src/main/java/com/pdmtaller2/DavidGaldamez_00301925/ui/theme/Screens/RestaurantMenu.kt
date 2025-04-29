@@ -1,0 +1,63 @@
+package com.pdmtaller2.DavidGaldamez_00301925.ui.theme.Screens
+
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.pdmtaller2.DavidGaldamez_00301925.ui.theme.Components.DishCard
+import com.pdmtaller2.DavidGaldamez_00301925.ui.theme.Data.restaurants
+
+@Composable
+fun RestaurantMenu(id: Int) {
+    val restaurant = restaurants.find { it.id == id }
+    val searchField = remember { mutableStateOf("") }
+
+    val menu = remember(restaurant, searchField.value) {
+        if (searchField.value.isBlank()) {
+            restaurant?.menu
+        } else {
+            restaurant?.menu?.filter { it.name.contains(searchField.value, ignoreCase = true) }
+        }
+    }
+
+    Column(
+        modifier = Modifier.fillMaxSize().padding(30.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            text = restaurant?.name ?: "No existe el restaurante",
+            fontWeight = FontWeight.Bold,
+            fontSize = 30.sp
+        )
+        Spacer(modifier = Modifier.height(20.dp))
+        TextField(
+            modifier = Modifier.fillMaxWidth(),
+            value = searchField.value,
+            singleLine = true,
+            onValueChange = {searchField.value = it},
+            label = { Text(text = "Buscar platillo") },
+        )
+        Spacer(modifier = Modifier.height(25.dp))
+        Column(
+            modifier = Modifier.fillMaxSize()
+        ) {
+
+            menu?.forEach { dish ->
+                DishCard(dish)
+            }
+        }
+    }
+}
+

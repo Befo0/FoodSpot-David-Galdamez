@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 object RestaurantListScreen
 
 @Serializable
-object RestaurantMenuScreen
+data class RestaurantMenuScreen(val id: Int)
 
 @Serializable
 object SearchBarScreen
