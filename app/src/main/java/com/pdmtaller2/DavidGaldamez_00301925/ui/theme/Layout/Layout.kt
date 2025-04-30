@@ -40,7 +40,7 @@ import com.pdmtaller2.DavidGaldamez_00301925.ui.theme.Screens.RestaurantMenu
 import com.pdmtaller2.DavidGaldamez_00301925.ui.theme.Screens.SearchScreen
 
 enum class ScreenNames(){
-    HOME, RESTAURANT, SEARCH, PRODUCTS
+    HOME, RESTAURANT, SEARCH, PRODUCTS, RESTAURANTSEARCHED
 }
 
 @Composable
@@ -90,7 +90,11 @@ fun CustomScaffold(){
                     RestaurantMenu( restaurantId)
                 }
                 composable <SearchBarScreen>{
-                    SearchScreen()
+                    val onRestaurantClick = { restaurantId: Int ->
+                        currentScreen.value = ScreenNames.RESTAURANTSEARCHED
+                        navController.navigate(RestaurantMenuScreen(restaurantId))
+                    }
+                    SearchScreen(onRestaurantClick)
                 }
                 composable <MyProductsListScreen>{
                     MyProductsScreen()
@@ -106,9 +110,13 @@ fun CustomTopBar(navController: NavController, currentScreen: MutableState<Scree
     TopAppBar(
         title = { Text(text = "FoodSpot")},
         navigationIcon = {
-            if (currentScreen.value == ScreenNames.RESTAURANT) {
+            if (currentScreen.value == ScreenNames.RESTAURANT || currentScreen.value == ScreenNames.RESTAURANTSEARCHED) {
                 IconButton(onClick = {
-                    currentScreen.value = ScreenNames.HOME
+                    if(currentScreen.value == ScreenNames.RESTAURANT){
+                        currentScreen.value = ScreenNames.HOME
+                    }else if(currentScreen.value == ScreenNames.RESTAURANTSEARCHED){
+                        currentScreen.value = ScreenNames.SEARCH
+                    }
                     navController.popBackStack()
                 }) {
                     Icon(
