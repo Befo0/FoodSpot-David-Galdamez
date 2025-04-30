@@ -36,7 +36,8 @@ fun SearchScreen(onRestaurantCardClick: (Int) -> Unit){
         } else {
             restaurants.filter { restaurant ->
                 restaurant.name.contains(searchString, ignoreCase = true) ||
-                        restaurant.menu.any{dish -> dish.name.contains(searchString, ignoreCase = true)}
+                        restaurant.menu.any{dish -> dish.name.contains(searchString, ignoreCase = true)} ||
+                        restaurant.categories.any{categorie -> categorie.contains(searchString, ignoreCase = true)}
             }
         }
     }
